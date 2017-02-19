@@ -12,9 +12,8 @@ import ListScreen from './ListScreen.js';
 import DetailScreen from './DetailScreen.js';
 
 const routes = [
-  {title: 'First Scene', index: 0},
-  {title: 'Second Scene', index: 1},
-  {title: 'Third Scene', index: 2},
+  {title: 'Movie Explorer', index: 0},
+  {title: 'Details', index: 1},
 ];
 
 export default class MovieExplorer extends Component {
@@ -49,13 +48,18 @@ export default class MovieExplorer extends Component {
             <Navigator.NavigationBar
               routeMapper={{
                 LeftButton: (route, navigator, index, navState) => {
-                  return (<Text style={styles.navText}>Cancel</Text>);
+                  if (route.index !== 0) {
+                    return (
+                      <TouchableHighlight onPress={() => navigator.pop()}>
+                        <Text style={styles.navText}>Back</Text>
+                      </TouchableHighlight>
+                    );
+                  }
                 },
-                RightButton: (route, navigator, index, navState) => {
-                  return (<Text style={styles.navText}>Done</Text>);
-                },
+                RightButton: (route, navigator, index, navState) => {},
                 Title: (route, navigator, index, navState) => {
-                  return (<Text style={styles.title}>Movie Explorer</Text>);
+                  console.log(route, index);
+                  return (<Text style={styles.title}>{routes[route.index].title}</Text>);
                 }
               }}
               style={{backgroundColor: '#3333ff'}}
