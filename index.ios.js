@@ -7,6 +7,8 @@ import {
   Navigator,
   TouchableHighlight
 } from 'react-native';
+import ListScreen from './ListScreen.js';
+import DetailScreen from './DetailScreen.js';
 
 const routes = [
   {title: 'First Scene', index: 0},
@@ -20,19 +22,24 @@ export default class MovieExplorer extends Component {
       <Navigator
         style={styles.container}
         initialRoute={routes[0]}
-        renderScene={(route, navigator) =>
-          <View style={styles.content}>
-            <TouchableHighlight onPress={() => {
-                if (route.index < 2) {
-                  navigator.push(routes[route.index+1])
-                } else {
-                  navigator.resetTo(routes[0]);
-                }
-              }}>
-              <Text>Hello {route.title}</Text>
-            </TouchableHighlight>
-          </View>
-        }
+        renderScene={(route, navigator) => {
+          switch(route.index) {
+            case 0:
+              return (
+                <ListScreen
+                  navigator={navigator}
+                  route={routes[route.index]}
+                  {...route.passProps}
+                />)
+            case 1:
+              return (
+                <DetailScreen
+                  navigator={navigator}
+                  route={routes[route.index]}
+                  {...route.passProps}
+                />)
+          }
+        }}
         navigationBar={
           <Navigator.NavigationBar
             routeMapper={{
