@@ -38,9 +38,6 @@ export default class ListScreen extends Component {
             onChangeText={(search) => {this.setState({search})}}
             onSubmitEditing={this.handleSearch}
           />
-          <TouchableOpacity style={styles.searchButton} onPress={this.handleSearch}>
-            <Text style={styles.searchText}>Search</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.listViewWrapper}>
           <ListView
@@ -100,20 +97,9 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   searchBox: {
-    flex: 4,
-    borderWidth: 1,
-    padding: 5,
-    marginRight: 10
-  },
-  searchButton: {
-    borderWidth: 1,
-    backgroundColor: '#0066ff'
-  },
-  searchText: {
-    padding: 5,
-    color: 'white',
     flex: 1,
-    marginTop: 5
+    borderWidth: 1,
+    padding: 5
   },
   listViewWrapper: {
     flex: 15
