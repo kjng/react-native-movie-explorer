@@ -17,9 +17,11 @@ export default class ListScreen extends Component {
   }
 
   handleSearch() {
-    API.search(this.state.search).then(data => {
-      this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
-    });
+    if (this.state.search.length) {
+      API.search(this.state.search).then(data => {
+        this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
+      });
+    }
   }
 
   render() {
