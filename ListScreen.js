@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { TouchableHighlight, StyleSheet, Text, View, Image, ListView } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Image, ListView } from 'react-native';
 import API from './api.js';
 
 export default class ListScreen extends Component {
@@ -16,28 +16,30 @@ export default class ListScreen extends Component {
 
   render() {
     return (
-      <ListView
-        style={styles.container}
-        enableEmptySections={true}
-        dataSource={this.state.dataSource}
-        renderRow={(rowData) => {
-          return (
-            <View style={styles.row}>
-              <View style={{flex: 3, marginTop: 5, marginBottom: 5}}>
-                <Image style={styles.image} source={{uri: rowData.Poster}} />
-              </View>
-              <View style={{flex: 10, padding: 10, justifyContent: 'center'}}>
-                <Text style={styles.movieTitle}>{rowData.Title} ({rowData.Year})</Text>
-              </View>
-              <View style={{flex: 1, justifyContent: 'center'}}>
-                <Text style={styles.arrow}>></Text>
-              </View>
-            </View>)
-        }}
-        renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => (
-          <View key={rowID} style={{height: 1, backgroundColor: 'black'}} />
-        )}
-      />
+        <ListView
+          style={styles.container}
+          enableEmptySections={true}
+          dataSource={this.state.dataSource}
+          renderRow={(rowData) => {
+            return (
+              <TouchableOpacity onPress={() => this.props.navigator.push({index: 1, passProps: {imdbID: rowData.imdbID}})}>
+                <View style={styles.row}>
+                  <View style={{flex: 3, marginTop: 5, marginBottom: 5}}>
+                    <Image style={styles.image} source={{uri: rowData.Poster}} />
+                  </View>
+                  <View style={{flex: 10, padding: 10, justifyContent: 'center'}}>
+                    <Text style={styles.movieTitle}>{rowData.Title} ({rowData.Year})</Text>
+                  </View>
+                  <View style={{flex: 1, justifyContent: 'center'}}>
+                    <Text style={styles.arrow}>></Text>
+                  </View>
+                </View>
+              </TouchableOpacity>)
+          }}
+          renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => (
+            <View key={rowID} style={{height: 1, backgroundColor: 'black'}} />
+          )}
+        />
     )
   }
 }
