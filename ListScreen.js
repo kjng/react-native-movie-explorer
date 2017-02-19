@@ -1,45 +1,62 @@
 import React, { Component } from 'react';
-import { TouchableOpacity, StyleSheet, Text, View, Image, ListView } from 'react-native';
+import { TouchableOpacity, StyleSheet, Text, View, Image, ListView, TextInput } from 'react-native';
 import API from './api.js';
 
 export default class ListScreen extends Component {
   constructor(props) {
     super(props);
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
     this.state = {
-      dataSource: ds.cloneWithRows([])
+      search: '',
+      dataSource: this.ds.cloneWithRows([])
     };
     API.search('harry potter').then(data => {
-      this.setState({dataSource: ds.cloneWithRows(data)});
+      this.setState({dataSource: this.ds.cloneWithRows(data)});
+    });
+    this.handleSearchButton = this.handleSearchButton.bind(this);
+  }
+
+  handleSearchButton() {
+    API.search(this.state.search).then(data => {
+      this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
     });
   }
 
   render() {
     return (
-        <ListView
-          style={styles.container}
-          enableEmptySections={true}
-          dataSource={this.state.dataSource}
-          renderRow={(rowData) => {
-            return (
-              <TouchableOpacity onPress={() => this.props.navigator.push({index: 1, passProps: {imdbID: rowData.imdbID}})}>
-                <View style={styles.row}>
-                  <View style={{flex: 3, marginTop: 5, marginBottom: 5}}>
-                    <Image style={styles.image} source={{uri: rowData.Poster}} />
+      <View style={styles.container}>
+        <View style={styles.searchWrapper}>
+          <TextInput style={styles.searchBox} value={this.state.search} onChangeText={(search) => {this.setState({search})}} />
+          <TouchableOpacity style={styles.searchButton} onPress={this.handleSearchButton}>
+            <Text style={styles.searchText}>Search</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.listViewWrapper}>
+          <ListView
+            enableEmptySections={true}
+            dataSource={this.state.dataSource}
+            renderRow={(rowData) => {
+              return (
+                <TouchableOpacity onPress={() => this.props.navigator.push({index: 1, passProps: {imdbID: rowData.imdbID}})}>
+                  <View style={styles.row}>
+                    <View style={{flex: 3, marginTop: 5, marginBottom: 5}}>
+                      <Image style={styles.image} source={{uri: rowData.Poster}} />
+                    </View>
+                    <View style={{flex: 10, padding: 10, justifyContent: 'center'}}>
+                      <Text style={styles.movieTitle}>{rowData.Title} ({rowData.Year})</Text>
+                    </View>
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                      <Text style={styles.arrow}>></Text>
+                    </View>
                   </View>
-                  <View style={{flex: 10, padding: 10, justifyContent: 'center'}}>
-                    <Text style={styles.movieTitle}>{rowData.Title} ({rowData.Year})</Text>
-                  </View>
-                  <View style={{flex: 1, justifyContent: 'center'}}>
-                    <Text style={styles.arrow}>></Text>
-                  </View>
-                </View>
-              </TouchableOpacity>)
-          }}
-          renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => (
-            <View key={rowID} style={{height: 1, backgroundColor: 'black'}} />
-          )}
-        />
+                </TouchableOpacity>)
+            }}
+            renderSeparator={(sectionID, rowID, adjacentRowHighlighted) => (
+              <View key={rowID} style={{height: 1, backgroundColor: 'black'}} />
+            )}
+          />
+        </View>
+      </View>
     )
   }
 }
@@ -62,5 +79,32 @@ const styles = StyleSheet.create({
   },
   arrow: {
     fontSize: 20
+  },
+  searchWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 5,
+    marginBottom: 5
+  },
+  searchBox: {
+    flex: 4,
+    borderWidth: 1,
+    padding: 5,
+    marginRight: 10
+  },
+  searchButton: {
+    borderWidth: 1,
+    backgroundColor: '#0066ff'
+  },
+  searchText: {
+    padding: 5,
+    color: 'white',
+    flex: 1,
+    marginTop: 5
+  },
+  listViewWrapper: {
+    flex: 15
   }
 });
