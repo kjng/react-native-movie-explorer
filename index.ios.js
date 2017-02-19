@@ -58,7 +58,6 @@ export default class MovieExplorer extends Component {
                 },
                 RightButton: (route, navigator, index, navState) => {},
                 Title: (route, navigator, index, navState) => {
-                  console.log(route, index);
                   return (<Text style={styles.title}>{routes[route.index].title}</Text>);
                 }
               }}
