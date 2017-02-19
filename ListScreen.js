@@ -19,7 +19,11 @@ export default class ListScreen extends Component {
   handleSearch() {
     if (this.state.search.length) {
       API.search(this.state.search).then(data => {
-        this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
+        if (data) {
+          this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
+        } else {
+          this.setState({search: ''});
+        }
       });
     }
   }
