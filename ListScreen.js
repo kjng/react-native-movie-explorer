@@ -13,10 +13,10 @@ export default class ListScreen extends Component {
     API.search('harry potter').then(data => {
       this.setState({dataSource: this.ds.cloneWithRows(data)});
     });
-    this.handleSearchButton = this.handleSearchButton.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
-  handleSearchButton() {
+  handleSearch() {
     API.search(this.state.search).then(data => {
       this.setState({dataSource: this.ds.cloneWithRows(data), search: ''});
     });
@@ -26,8 +26,13 @@ export default class ListScreen extends Component {
     return (
       <View style={styles.container}>
         <View style={styles.searchWrapper}>
-          <TextInput style={styles.searchBox} value={this.state.search} onChangeText={(search) => {this.setState({search})}} />
-          <TouchableOpacity style={styles.searchButton} onPress={this.handleSearchButton}>
+          <TextInput
+            style={styles.searchBox}
+            value={this.state.search}
+            onChangeText={(search) => {this.setState({search})}}
+            onSubmitEditing={this.handleSearch}
+          />
+          <TouchableOpacity style={styles.searchButton} onPress={this.handleSearch}>
             <Text style={styles.searchText}>Search</Text>
           </TouchableOpacity>
         </View>
