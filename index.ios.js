@@ -33,6 +33,22 @@ export default class MovieExplorer extends Component {
             </TouchableHighlight>
           </View>
         }
+        navigationBar={
+          <Navigator.NavigationBar
+            routeMapper={{
+              LeftButton: (route, navigator, index, navState) => {
+                return (<Text style={styles.navText}>Cancel</Text>);
+              },
+              RightButton: (route, navigator, index, navState) => {
+                return (<Text style={styles.navText}>Done</Text>);
+              },
+              Title: (route, navigator, index, navState) => {
+                return (<Text style={styles.title}>Navigation Bar</Text>);
+              }
+            }}
+            style={{backgroundColor: 'azure'}}
+          />
+        }
       ></Navigator>
     );
   }
@@ -40,8 +56,14 @@ export default class MovieExplorer extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginTop: 20
+    flex: 1
+  },
+  navText: {
+    padding: 15
+  },
+  title: {
+    padding: 10,
+    fontSize: 15
   },
   content: {
     flex: 1,
