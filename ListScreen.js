@@ -21,7 +21,6 @@ export default class ListScreen extends Component {
         enableEmptySections={true}
         dataSource={this.state.dataSource}
         renderRow={(rowData) => {
-          console.log(rowData);
           return (
             <View style={styles.row}>
               <View style={{flex: 3, marginTop: 5, marginBottom: 5}}>
